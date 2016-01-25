@@ -1,0 +1,132 @@
+<img id="preview1" src="">
+<img id="preview2" src="">
+<pre id="resp"></pre>
+<form id="fr" method="post" action="">
+    <input name="someinput" value="test"><br>
+    <input id="file" name="img" type="file"><br>
+    <button type="submit">submit</button>
+</form>
+<script src="jquery.js"></script>
+<script>
+$('#fr').on('submit', function (e) {
+    e.preventDefault();
+
+    /* xhr method, will receive file in $_FILES on php backend */
+    xhr(this, {
+        url: 'test.php',
+        type: 'post',
+        dataType: 'html',
+        success: function (response) {
+            console.log(response);
+        }
+    });
+
+    /* data-uri method, will receive file as encoded base64 */
+
+    // dataUriAjax(this, {
+    //     url: 'test.php',
+    //     type: 'post',
+    //     success: function (response) {
+    //         console.log(response);
+    //     }
+    // });
+
+    // see test.php to see how to receive files
+});
+
+function xhr(form, data) {
+    data = data || {}
+    data.url = data.url || '';
+    data.type = data.type || 'post';
+    data.dataType = data.dataType || 'json';
+
+    data.onprogress = data.onprogress || function (e) {};
+    data.success = data.success || function (resp) {};
+
+    var formData = new FormData(form),
+        xhr = new XMLHttpRequest();
+
+    xhr.upload.onprogress = data.onprogress;
+    xhr.onload = function (e) {
+        if (200 === this.status) {
+            var resp = this.response;
+            if ('json' === data.dataType) {
+                resp = JSON.parse(resp);
+            }
+            return data.success.apply(this, [resp]);
+        }
+    };
+
+    xhr.open(data.type, data.url, true);
+    xhr.send(formData);
+}
+
+function dataUriAjax(form, data) {
+    data = data || {}
+    data.url = data.url || '';
+    data.type = data.type || 'post';
+
+    var obj = {
+        url: data.url,
+        type: data.type
+    };
+    data.dataType && (obj.dataType = data.dataType);
+    data.success && (obj.success = data.success);
+    data.error && (obj.error = data.error);
+    data.complete && (obj.complete = data.complete);
+
+    function encodeFile(file, cb) {
+        var reader = new FileReader();
+
+        reader.onload = function () {
+            return cb(reader.result);
+        };
+
+        if (file) {
+            reader.readAsDataURL(file);
+        }
+    }
+
+    function doAjax(data) {
+        console.log(data);
+        obj.data = data;
+        $.ajax(obj);
+    }
+
+    // start
+    var data = {},
+        to_be_encoded = [],
+        encoded = [];
+    $(form).children().each(function () {
+        if ($(this).attr('name') && $(this).val()) {
+            data[$(this).attr('name')] = $(this).val();
+        }
+        if ('file' === $(this).attr('type')) {
+            for (var i = 0; i < this.files.length; i++) {
+                to_be_encoded.push({
+                    name: $(this).val(),
+                    file: this.files[i]
+                });
+            }
+        }
+    });
+    if (to_be_encoded.length) {
+        to_be_encoded.forEach(function (self, i) {
+            encodeFile(self.file, function (encodedFile) {
+                var parts = encodedFile.split(','),
+                    enc = parts[parts.length - 1];
+                encoded.push({
+                    name: self.name,
+                    file: enc
+                });
+                if (encoded.length === to_be_encoded.length) {
+                    data.encoded = encoded;
+                    return doAjax(data);
+                }
+            });
+        });
+    } else {
+        doAjax(data);
+    }
+}
+</script>

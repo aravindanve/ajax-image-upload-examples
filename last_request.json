@@ -1,0 +1,12 @@
+{
+    "Host": "localhost",
+    "User-Agent": "Mozilla\/5.0 (Macintosh; Intel Mac OS X 10.11; rv:43.0) Gecko\/20100101 Firefox\/43.0",
+    "Accept": "text\/html,application\/xhtml+xml,application\/xml;q=0.9,*\/*;q=0.8",
+    "Accept-Language": "en-US,en;q=0.5",
+    "Accept-Encoding": "gzip, deflate",
+    "Referer": "http:\/\/localhost\/nepu-data-uri\/",
+    "Content-Length": "38323",
+    "Content-Type": "multipart\/form-data; boundary=---------------------------1892252248998203713667554027",
+    "Cookie": "_ga=GA1.1.926168225.1438887939; __utma=111872281.926168225.1438887939.1443953110.1443965124.2; __utmz=111872281.1443953110.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); _gauges_unique_year=1; _gauges_unique=1; __smToken=txLjqJh4aY9FyuWEk1HlOMyW; pus-idv=A012cc420fb214b145608f89da0b3a5b3e74; __atuvc=9%7C44%2C3%7C45",
+    "Connection": "keep-alive"
+}
