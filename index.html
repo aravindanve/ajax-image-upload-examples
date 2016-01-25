@@ -1,14 +1,11 @@
-<img id="preview1" src="">
-<img id="preview2" src="">
-<pre id="resp"></pre>
-<form id="fr" method="post" action="">
-    <input name="someinput" value="test"><br>
-    <input id="file" name="img" type="file"><br>
+<form method="post" action="">
+    <input name="sometext" value="test"><br>
+    <input name="img" type="file"><br>
     <button type="submit">submit</button>
 </form>
 <script src="jquery.js"></script>
 <script>
-$('#fr').on('submit', function (e) {
+$('form').on('submit', function (e) {
     e.preventDefault();
 
     /* xhr method, will receive file in $_FILES on php backend */
